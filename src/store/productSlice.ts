@@ -75,6 +75,19 @@ export const getProductsByCategory = createAsyncThunk(
   }
 );
 
+//As the API endpoint differ for searching so I had to create new createAsyncThunk. Otherwise we could use getProducts api with search param
+export const searchProductByTitle = createAsyncThunk(
+  'products/searchProductByTitle',
+  async ({ title }: { title: string }) => {
+    try {
+      const response = await instance.get(`/products/search?q=${title}`);
+      return response.data;
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+);
+
 const slice = createSlice({
   name: 'product',
   initialState,
@@ -126,6 +139,20 @@ const slice = createSlice({
         state.limit = action.payload?.limit;
       })
       .addCase(getProductsByCategory.rejected, (state, action) => {
+        state.status = 'failed';
+      })
+
+      .addCase(searchProductByTitle.pending, (state, action) => {
+        state.status = 'loading';
+      })
+      .addCase(searchProductByTitle.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.products = action.payload?.products;
+        state.total = action.payload?.total;
+        state.skip = action.payload?.skip;
+        state.limit = action.payload?.limit;
+      })
+      .addCase(searchProductByTitle.rejected, (state, action) => {
         state.status = 'failed';
       });
   },

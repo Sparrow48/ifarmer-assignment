@@ -4,16 +4,16 @@ import {
   getCategories,
   getProducts,
   getProductsByCategory,
+  searchProductByTitle,
 } from '@/store/productSlice';
+import { debounce } from '@/utils/Debounce';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 const FilterProducts = () => {
   const { categories } = useSelector((state: RootState) => state.product);
 
-  const [active, setActive] = useState('All');
-  const [searchString, setSearchString] = useState('');
-  const [category, setCategory] = useState(['All']);
+  const [active, setActive] = useState('all');
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -31,8 +31,16 @@ const FilterProducts = () => {
   };
 
   const search = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchString(event.target.value);
+    setActive('all');
+    const key = event.target.value;
+    if (key) {
+      dispatch(searchProductByTitle({ title: key }));
+    } else {
+      dispatch(getProducts());
+    }
   };
+
+  const searchByName = debounce(search, 500);
 
   return (
     <div>
@@ -43,7 +51,7 @@ const FilterProducts = () => {
             id="grid-city"
             type="text"
             placeholder="Search"
-            // onChange={searchByName}
+            onChange={searchByName}
           />
         </div>
       </div>
