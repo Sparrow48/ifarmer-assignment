@@ -1,12 +1,33 @@
-import React, { useState } from 'react';
+'use client';
+import { AppDispatch, RootState } from '@/store';
+import {
+  getCategories,
+  getProducts,
+  getProductsByCategory,
+} from '@/store/productSlice';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 const FilterProducts = () => {
+  const { categories } = useSelector((state: RootState) => state.product);
+
   const [active, setActive] = useState('All');
   const [searchString, setSearchString] = useState('');
   const [category, setCategory] = useState(['All']);
 
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    dispatch(getCategories());
+  }, []);
+
   const filterByCategory = (key = '') => {
     setActive(key);
+    if (key == 'all') {
+      dispatch(getProducts());
+    } else {
+      dispatch(getProductsByCategory({ category: key }));
+    }
   };
 
   const search = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,15 +53,26 @@ const FilterProducts = () => {
         </div>
 
         <ul className="flex flex-col items-start pt-3 pl-3">
-          {category.sort().map((item) => (
+          <button
+            className={
+              active === 'all' ? 'pt-2  border-b-2  border-blue-500' : 'pt-2 '
+            }
+            key="all"
+            onClick={() => filterByCategory('all')}
+          >
+            All
+          </button>
+          {categories?.map((item) => (
             <button
               className={
-                active === item ? 'pt-2  border-b-2  border-blue-500' : 'pt-2 '
+                active === item?.slug
+                  ? 'pt-2  border-b-2  border-blue-500'
+                  : 'pt-2 '
               }
-              key={item}
-              onClick={() => filterByCategory(item)}
+              key={item?.slug}
+              onClick={() => filterByCategory(item?.slug)}
             >
-              {item}
+              {item?.name}
             </button>
           ))}
         </ul>
