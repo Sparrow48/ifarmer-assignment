@@ -77,6 +77,9 @@ const playerSlice = createSlice({
       state.board = Array(9).fill(null);
       state.turn = 'X';
     },
+    resetLeaderboard(state) {
+      state.leaderboard = {};
+    },
   },
 });
 
@@ -90,5 +93,6 @@ export const {
   updateLeaderboard,
   resetState,
   replayGame,
+  resetLeaderboard,
 } = playerSlice.actions;
 export default playerSlice.reducer;

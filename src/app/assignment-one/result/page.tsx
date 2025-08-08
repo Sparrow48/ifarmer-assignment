@@ -62,18 +62,20 @@ export default function ResultPage() {
         </ul>
       </div>
 
-      <button
-        onClick={() => playAgain()}
-        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-      >
-        Play Again
-      </button>
-      <button
-        onClick={() => newGame()}
-        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-      >
-        New Game
-      </button>
+      <div className="Flex space-x-2">
+        <button
+          onClick={() => playAgain()}
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+        >
+          Play Again
+        </button>
+        <button
+          onClick={() => newGame()}
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+        >
+          New Game
+        </button>
+      </div>
     </div>
   );
 }
