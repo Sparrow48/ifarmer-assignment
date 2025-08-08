@@ -24,7 +24,7 @@ const FilterProducts = () => {
   const filterByCategory = (key = '') => {
     setActive(key);
     if (key == 'all') {
-      dispatch(getProducts());
+      dispatch(getProducts({ page: 1 }));
     } else {
       dispatch(getProductsByCategory({ category: key }));
     }
@@ -36,7 +36,7 @@ const FilterProducts = () => {
     if (key) {
       dispatch(searchProductByTitle({ title: key }));
     } else {
-      dispatch(getProducts());
+      dispatch(getProducts({ page: 1 }));
     }
   };
 

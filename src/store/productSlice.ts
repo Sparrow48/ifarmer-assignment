@@ -49,7 +49,6 @@ export const createProducts = createAsyncThunk(
   async (data) => {
     try {
       const response = await instance.post(`/products/add`, data);
-      console.log('🚀 ~ response:', response);
       return response.data;
     } catch (error) {
       return Promise.reject(error);
@@ -59,9 +58,10 @@ export const createProducts = createAsyncThunk(
 
 export const getProducts = createAsyncThunk(
   'products/getProducts',
-  async () => {
+  async ({ page }: { page: number }) => {
     try {
-      const response = await instance.get(`/products`);
+      const skip = (page - 1) * 30;
+      const response = await instance.get(`/products?skip=${skip}`);
       return response.data;
     } catch (error) {
       return Promise.reject(error);
@@ -69,6 +69,7 @@ export const getProducts = createAsyncThunk(
   }
 );
 
+//can't use pagination on filtered and searched product as the API doesn't have pagination support
 export const getCategories = createAsyncThunk(
   'categories/getCategories',
   async () => {

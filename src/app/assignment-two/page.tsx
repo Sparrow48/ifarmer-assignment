@@ -2,10 +2,11 @@
 import FilterProducts from '@/components/product/FilterProducts';
 import ProductItem from '@/components/product/ProductItem';
 import { getProducts } from '@/store/productSlice';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from '@/store';
 import Link from 'next/link';
+import Pagination from '@/components/product/Pagination';
 
 const Product = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -13,9 +14,11 @@ const Product = () => {
     (state: RootState) => state.product
   );
 
+  const [currentPage, setCurrentPage] = useState(1);
+
   useEffect(() => {
-    dispatch(getProducts());
-  }, []);
+    dispatch(getProducts({ page: currentPage }));
+  }, [currentPage]);
 
   return (
     <div>
@@ -34,17 +37,24 @@ const Product = () => {
             </div>
           </div>
           {total > 0 ? (
-            <div className="flex flex-wrap justify-center gap-10 max-w-5xl mx-auto pt-5">
-              {products.map((product) => (
-                <div key={product?.id}>
-                  <ProductItem
-                    image={product?.images[0]}
-                    title={product?.title}
-                    price={product?.price}
-                    _id={product?.id}
-                  />
-                </div>
-              ))}
+            <div>
+              <div className="flex flex-wrap justify-center gap-10 max-w-5xl mx-auto pt-5">
+                {products.map((product) => (
+                  <div key={product?.id}>
+                    <ProductItem
+                      image={product?.images[0]}
+                      title={product?.title}
+                      price={product?.price}
+                      _id={product?.id}
+                    />
+                  </div>
+                ))}
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={Math.round(total / 30)}
+                  onPageChange={(page) => setCurrentPage(page)}
+                />
+              </div>
             </div>
           ) : (
             <>No Product Found</>
