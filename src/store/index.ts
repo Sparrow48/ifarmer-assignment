@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import playerReducer from './playerSlice';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
+import ProductSlice from './productSlice';
 
 // Persist config for only player reducer
 const playerPersistConfig = {
@@ -17,7 +18,7 @@ const persistedPlayerReducer = persistReducer(
 export const store = configureStore({
   reducer: {
     player: persistedPlayerReducer, // persisted
-    // otherReducer: otherReducer, // normal, not persisted
+    product: ProductSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

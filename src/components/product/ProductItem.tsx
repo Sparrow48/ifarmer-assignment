@@ -3,7 +3,7 @@ import Link from 'next/link';
 import React from 'react';
 
 interface ProductItemProps {
-  _id: string;
+  _id: number;
   image: string;
   title: string;
   price: number;
@@ -15,7 +15,7 @@ const ProductItem: React.FC<ProductItemProps> = (props) => {
       <Link href={`/productDetails/${props._id}`}>
         <div className="relative w-64 h-64">
           <Image
-            src="https://cdn.dummyjson.com/product-images/beauty/essence-mascara-lash-princess/1.webp"
+            src={props.image}
             alt="Essence Mascara Lash Princess"
             fill
             className="rounded-lg object-cover"
