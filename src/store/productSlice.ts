@@ -13,6 +13,7 @@ interface Product {
   category: string;
   thumbnail: string;
   images: string[];
+  sku: string;
 }
 
 interface Categories {
@@ -29,6 +30,7 @@ interface ProductState {
   categories: Categories[];
   status: 'idle' | 'loading' | 'succeeded' | 'failed' | '';
   product: Product;
+  createProductData: any;
 }
 
 const initialState: ProductState = {
@@ -39,7 +41,21 @@ const initialState: ProductState = {
   status: '',
   categories: [],
   product: {},
+  createProductData: {},
 };
+
+export const createProducts = createAsyncThunk(
+  'products/createProducts',
+  async (data) => {
+    try {
+      const response = await instance.post(`/products/add`, data);
+      console.log('🚀 ~ response:', response);
+      return response.data;
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+);
 
 export const getProducts = createAsyncThunk(
   'products/getProducts',
@@ -117,6 +133,18 @@ const slice = createSlice({
 
   extraReducers: (builder) => {
     builder
+
+      .addCase(createProducts.pending, (state, action) => {
+        state.status = 'loading';
+      })
+      .addCase(createProducts.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.createProductData = action.payload;
+      })
+      .addCase(createProducts.rejected, (state, action) => {
+        state.status = 'failed';
+      })
+
       .addCase(getProducts.pending, (state, action) => {
         state.status = 'loading';
       })

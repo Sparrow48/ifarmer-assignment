@@ -5,6 +5,7 @@ import { getProducts } from '@/store/productSlice';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from '@/store';
+import Link from 'next/link';
 
 const Product = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -29,7 +30,7 @@ const Product = () => {
             </div>
 
             <div className="relative inline-block w-64 ">
-              <button>Add New</button>
+              <Link href={`/assignment-two/create`}>Add New Product</Link>
             </div>
           </div>
           {total > 0 ? (

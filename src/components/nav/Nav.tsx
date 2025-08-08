@@ -24,7 +24,7 @@ export default function Nav() {
 
   return (
     <>
-      <div className="py-3 fixed z-30 w-full">
+      <div className="py-3 fixed z-15 w-full">
         <header className="px-5 md:px-8 h-[62px] w-full bg-blue-950 text-white flex items-center">
           <nav className="flex justify-center items-center w-full">
             <ul className="flex gap-11  items-center ">

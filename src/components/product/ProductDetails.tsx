@@ -41,7 +41,7 @@ const ProductDetails = (props: ProductDetailsProps) => {
                 <p>Available : In Stock ({product.stock})</p>
                 <p>Category : {product.category}</p>
                 <p>Brand : {product.brand}</p>
-                {/* <p>SKU : {product.psn}</p> */}
+                <p>SKU : {product.sku}</p>
                 <p className="border-b-2 border-gray-400"></p>
               </div>
             </div>
