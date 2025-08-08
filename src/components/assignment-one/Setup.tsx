@@ -1,16 +1,30 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { setPlayers } from '@/store/playerSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
+import { RootState } from '@/store';
 
 const Setup = () => {
-  const [playerOne, setPlayerOne] = useState('');
-  const [playerTwo, setPlayerTwo] = useState('');
-  const [errors, setErrors] = useState({ playerOne: '', playerTwo: '' });
+  const { playerOne, playerTwo } = useSelector(
+    (state: RootState) => state.player
+  );
+
+  const [playerOneName, setPlayerOneName] = useState('');
+  const [playerTwoName, setPlayerTwoName] = useState('');
+  const [errors, setErrors] = useState({
+    playerOneName: '',
+    playerTwoName: '',
+  });
 
   const dispatch = useDispatch();
   const router = useRouter();
+
+  useEffect(() => {
+    if (playerOne.length > 0 || playerTwo.length > 0) {
+      router.push('/assignment-one/game');
+    }
+  }, [playerOne, playerTwo, router]);
 
   const validateField = (name: string, value: string) => {
     if (!value.trim()) {
@@ -19,18 +33,21 @@ const Setup = () => {
     return '';
   };
 
-  const handleChange = (field: 'playerOne' | 'playerTwo', value: string) => {
-    if (field === 'playerOne') {
-      setPlayerOne(value);
+  const handleChange = (
+    field: 'playerOneName' | 'playerTwoName',
+    value: string
+  ) => {
+    if (field === 'playerOneName') {
+      setPlayerOneName(value);
       setErrors((prev) => ({
         ...prev,
-        playerOne: validateField('Player One', value),
+        playerOneName: validateField('Player One', value),
       }));
     } else {
-      setPlayerTwo(value);
+      setPlayerTwoName(value);
       setErrors((prev) => ({
         ...prev,
-        playerTwo: validateField('Player Two', value),
+        playerTwoName: validateField('Player Two', value),
       }));
     }
   };
@@ -39,8 +56,8 @@ const Setup = () => {
     e.preventDefault();
     dispatch(
       setPlayers({
-        playerOne,
-        playerTwo,
+        playerOne: playerOneName,
+        playerTwo: playerTwoName,
       })
     );
 
@@ -48,10 +65,10 @@ const Setup = () => {
   };
 
   const isFormValid =
-    playerOne.trim() &&
-    playerTwo.trim() &&
-    !errors.playerOne &&
-    !errors.playerTwo;
+    playerOneName.trim() &&
+    playerTwoName.trim() &&
+    !errors.playerOneName &&
+    !errors.playerTwoName;
 
   return (
     <div className="w-full flex bg-theme-red-dark py-12 px-4 items-center justify-center">
@@ -62,46 +79,46 @@ const Setup = () => {
         {/* Player One */}
         <div className="mb-4">
           <label
-            htmlFor="playerOne"
+            htmlFor="playerOneName"
             className="block text-gray-700 text-sm font-bold mb-2"
           >
             Player One
           </label>
           <input
-            id="playerOne"
+            id="playerOneName"
             type="text"
             placeholder="Name of the first player."
-            value={playerOne}
-            onChange={(e) => handleChange('playerOne', e.target.value)}
+            value={playerOneName}
+            onChange={(e) => handleChange('playerOneName', e.target.value)}
             className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
-              errors.playerOne ? 'border-red-500' : ''
+              errors.playerOneName ? 'border-red-500' : ''
             }`}
           />
-          {errors.playerOne && (
-            <p className="text-red-500 text-xs mt-1">{errors.playerOne}</p>
+          {errors.playerOneName && (
+            <p className="text-red-500 text-xs mt-1">{errors.playerOneName}</p>
           )}
         </div>
 
         {/* Player Two */}
         <div className="mb-4">
           <label
-            htmlFor="playerTwo"
+            htmlFor="playerTwoName"
             className="block text-gray-700 text-sm font-bold mb-2"
           >
             Player Two
           </label>
           <input
-            id="playerTwo"
+            id="playerTwoName"
             type="text"
             placeholder="Name of the second player."
-            value={playerTwo}
-            onChange={(e) => handleChange('playerTwo', e.target.value)}
+            value={playerTwoName}
+            onChange={(e) => handleChange('playerTwoName', e.target.value)}
             className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
-              errors.playerTwo ? 'border-red-500' : ''
+              errors.playerTwoName ? 'border-red-500' : ''
             }`}
           />
-          {errors.playerTwo && (
-            <p className="text-red-500 text-xs mt-1">{errors.playerTwo}</p>
+          {errors.playerTwoName && (
+            <p className="text-red-500 text-xs mt-1">{errors.playerTwoName}</p>
           )}
         </div>
 

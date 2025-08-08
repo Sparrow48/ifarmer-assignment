@@ -53,6 +53,8 @@ const playerSlice = createSlice({
       state.scores = { X: 0, O: 0 };
       state.board = Array(9).fill(null);
       state.turn = 'X';
+      state.playerOne = '';
+      state.playerTwo = '';
     },
     updateLeaderboard(state, action) {
       for (const [playerName, score] of Object.entries(action.payload)) {
@@ -65,6 +67,16 @@ const playerSlice = createSlice({
         }
       }
     },
+    resetState(state, action: { payload: keyof PlayerState }) {
+      (state[action.payload] as (typeof initialState)[typeof action.payload]) =
+        initialState[action.payload];
+    },
+    replayGame(state) {
+      state.round = 1;
+      state.scores = { X: 0, O: 0 };
+      state.board = Array(9).fill(null);
+      state.turn = 'X';
+    },
   },
 });
 
@@ -76,5 +88,7 @@ export const {
   nextRound,
   resetGame,
   updateLeaderboard,
+  resetState,
+  replayGame,
 } = playerSlice.actions;
 export default playerSlice.reducer;

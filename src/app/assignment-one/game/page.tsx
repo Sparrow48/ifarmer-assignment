@@ -8,6 +8,7 @@ import {
   makeMove,
   nextRound,
   resetBoard,
+  resetGame,
   updateLeaderboard,
 } from '@/store/playerSlice';
 
@@ -68,7 +69,7 @@ export default function GamePage() {
               [playerTwo]: scoreO,
             })
           );
-          router.push('/assignment-1/result');
+          router.push('/assignment-one/result');
         } else {
           setTimeout(() => {
             dispatch(nextRound());
@@ -90,6 +91,11 @@ export default function GamePage() {
   const handleClick = (index: number) => {
     if (winner) return;
     if (!board[index] && !winner) dispatch(makeMove(index));
+  };
+
+  const newGame = () => {
+    dispatch(resetGame());
+    router.push('/');
   };
 
   if (loading)
@@ -132,6 +138,13 @@ export default function GamePage() {
           className="bg-yellow-400 text-white px-4 py-2"
         >
           Reset Round
+        </button>
+
+        <button
+          onClick={() => newGame()}
+          className="bg-yellow-400 text-white px-4 py-2"
+        >
+          New Game
         </button>
       </div>
     </div>
