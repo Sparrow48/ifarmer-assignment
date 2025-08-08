@@ -76,7 +76,6 @@ const Setup = () => {
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 md:w-xl"
         onSubmit={startGame}
       >
-        {/* Player One */}
         <div className="mb-4">
           <label
             htmlFor="playerOneName"
@@ -99,7 +98,6 @@ const Setup = () => {
           )}
         </div>
 
-        {/* Player Two */}
         <div className="mb-4">
           <label
             htmlFor="playerTwoName"
@@ -122,7 +120,6 @@ const Setup = () => {
           )}
         </div>
 
-        {/* Start Button */}
         <div className="flex items-center justify-between">
           <button
             type="submit"
