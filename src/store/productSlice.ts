@@ -28,6 +28,7 @@ interface ProductState {
   limit: number;
   categories: Categories[];
   status: 'idle' | 'loading' | 'succeeded' | 'failed' | '';
+  product: Product;
 }
 
 const initialState: ProductState = {
@@ -37,6 +38,7 @@ const initialState: ProductState = {
   limit: 0,
   status: '',
   categories: [],
+  product: {},
 };
 
 export const getProducts = createAsyncThunk(
@@ -81,6 +83,18 @@ export const searchProductByTitle = createAsyncThunk(
   async ({ title }: { title: string }) => {
     try {
       const response = await instance.get(`/products/search?q=${title}`);
+      return response.data;
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+);
+
+export const getProductDetails = createAsyncThunk(
+  'products/getProductDetails',
+  async ({ id }: { id: string }) => {
+    try {
+      const response = await instance.get(`/products/${id}`);
       return response.data;
     } catch (error) {
       return Promise.reject(error);
@@ -153,6 +167,17 @@ const slice = createSlice({
         state.limit = action.payload?.limit;
       })
       .addCase(searchProductByTitle.rejected, (state, action) => {
+        state.status = 'failed';
+      })
+
+      .addCase(getProductDetails.pending, (state, action) => {
+        state.status = 'loading';
+      })
+      .addCase(getProductDetails.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.product = action.payload;
+      })
+      .addCase(getProductDetails.rejected, (state, action) => {
         state.status = 'failed';
       });
   },

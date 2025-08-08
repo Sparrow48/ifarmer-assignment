@@ -25,7 +25,7 @@ const Product = () => {
         <div className="max-w-2xl divide-y lg:max-w-4xl xl:max-w-5xl basis-5/6">
           <div className="flex flex-col md:flex-row gap-3 justify-between lg:w-4xl xl:max-w-5xl pb-2">
             <div className="px-3 w-fit pt-1 bg-gray-100 border rounded">
-              <h1>{products.length} Products Found.</h1>
+              <h1>{total} Products Found.</h1>
             </div>
 
             <div className="relative inline-block w-64 ">

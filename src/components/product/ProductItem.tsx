@@ -12,7 +12,7 @@ interface ProductItemProps {
 const ProductItem: React.FC<ProductItemProps> = (props) => {
   return (
     <div className="flex flex-col space-y-3 lg:w-72  shadow-lg rounded-lg p-2">
-      <Link href={`/productDetails/${props._id}`}>
+      <Link href={`/assignment-two/productDetails/${props._id}`}>
         <div className="relative w-64 h-64">
           <Image
             src={props.image}
