@@ -10,7 +10,7 @@ import Pagination from '@/components/product/Pagination';
 
 const Product = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { products, total, skip, limit } = useSelector(
+  const { products, total, status } = useSelector(
     (state: RootState) => state.product
   );
 
@@ -28,36 +28,51 @@ const Product = () => {
         </div>
         <div className="max-w-2xl divide-y lg:max-w-4xl xl:max-w-5xl basis-5/6">
           <div className="flex flex-col md:flex-row gap-3 justify-between lg:w-4xl xl:max-w-5xl pb-2">
-            <div className="px-3 w-fit pt-1 bg-gray-100 border rounded">
+            <div className=" w-fit p-2 bg-gray-200 border border-gray-200 rounded">
               <h1>{total} Products Found.</h1>
             </div>
 
-            <div className="relative inline-block w-64 ">
-              <Link href={`/assignment-two/create`}>Add New Product</Link>
+            <div className="relative inline-block w-40">
+              <Link
+                className="border shadow-2xl bg-blue-300 p-2 rounded-md border-blue-400 hover:bg-blue-200 hover:border-blue-200"
+                href={`/assignment-two/create`}
+              >
+                Add New Product
+              </Link>
             </div>
           </div>
-          {total > 0 ? (
-            <div>
-              <div className="flex flex-wrap justify-center gap-10 max-w-5xl mx-auto pt-5">
-                {products.map((product) => (
-                  <div key={product?.id}>
-                    <ProductItem
-                      image={product?.images[0]}
-                      title={product?.title}
-                      price={product?.price}
-                      _id={product?.id}
+          {status == 'succeeded' ? (
+            <>
+              {total > 0 ? (
+                <div>
+                  <div className="flex flex-wrap justify-center gap-10 max-w-5xl mx-auto pt-5">
+                    {products.map((product) => (
+                      <div key={product?.id}>
+                        <ProductItem
+                          image={product?.images[0]}
+                          title={product?.title}
+                          price={product?.price}
+                          _id={product?.id}
+                        />
+                      </div>
+                    ))}
+                    <Pagination
+                      currentPage={currentPage}
+                      totalPages={Math.round(total / 30)}
+                      onPageChange={(page) => setCurrentPage(page)}
                     />
                   </div>
-                ))}
-                <Pagination
-                  currentPage={currentPage}
-                  totalPages={Math.round(total / 30)}
-                  onPageChange={(page) => setCurrentPage(page)}
-                />
-              </div>
-            </div>
+                </div>
+              ) : (
+                <div className="flex items-center justify-center h-screen">
+                  <p className="text-3xl">No Product Found</p>
+                </div>
+              )}
+            </>
           ) : (
-            <>No Product Found</>
+            <div className="flex items-center justify-center h-screen">
+              <p className="text-3xl">Loading...</p>
+            </div>
           )}
         </div>
       </div>

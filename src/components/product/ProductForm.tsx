@@ -3,6 +3,8 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { productSchema, ProductFormData } from './../../utils/index';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
 
 export default function ProductForm({
   defaultValues,
@@ -11,6 +13,8 @@ export default function ProductForm({
   defaultValues?: Partial<ProductFormData>;
   onSubmit: (data: ProductFormData) => void;
 }) {
+  const { status } = useSelector((state: RootState) => state.product);
+
   const {
     register,
     handleSubmit,
@@ -95,7 +99,10 @@ export default function ProductForm({
 
       <button
         type="submit"
-        className="bg-blue-500 text-white px-4 py-2 rounded"
+        className={` text-white px-4 py-2 rounded cursor-pointer ${
+          status === 'loading' ? 'bg-gray-200' : 'bg-blue-500'
+        }`}
+        disabled={status === 'loading'}
       >
         Save Product
       </button>

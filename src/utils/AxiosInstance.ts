@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const base_url = 'https://dummyjson.com';
+const base_url = process.env.NEXT_PUBLIC_BASE_URL;
 
 export { base_url };
 
