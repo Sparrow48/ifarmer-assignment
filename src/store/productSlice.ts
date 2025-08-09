@@ -29,8 +29,8 @@ interface ProductState {
   limit: number;
   categories: Categories[];
   status: 'idle' | 'loading' | 'succeeded' | 'failed' | '';
-  product: Product;
-  createProductData: any;
+  product: Partial<Product>;
+  createProductData: Partial<Product>;
 }
 
 const initialState: ProductState = {
@@ -109,7 +109,7 @@ export const searchProductByTitle = createAsyncThunk(
 
 export const getProductDetails = createAsyncThunk(
   'products/getProductDetails',
-  async ({ id }: { id: string }) => {
+  async ({ id }: { id: string | string[] | undefined }) => {
     try {
       const response = await instance.get(`/products/${id}`);
       return response.data;
@@ -123,12 +123,12 @@ const slice = createSlice({
   name: 'product',
   initialState,
   reducers: {
-    resetState: (
-      state,
-      action: { payload: { key: keyof typeof initialState } }
+    resetState: <K extends keyof ProductState>(
+      state: ProductState,
+      action: { payload: { key: K } }
     ) => {
       const { key } = action.payload;
-      (state[key] as any) = initialState[key];
+      state[key] = initialState[key];
     },
   },
 
